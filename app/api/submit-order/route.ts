@@ -9,37 +9,28 @@ type OrderItem = {
 
 type OrderPayload = {
   orderSource?: string;
-  technicianSource?: string;
-  technicianId?: string;
-  technicianName: string;
-  technicianEmail: string;
-  requesterName: string;
-  requesterEmail: string;
-  ccEmail?: string;
+
+  shipToName: string;
   phone?: string;
   shippingAddress1?: string;
   shippingAddress2?: string;
   city?: string;
   state?: string;
   zip?: string;
-  priority: string;
+
+  requesterName: string;
+  requesterEmail: string;
+  ccEmail?: string;
   comments?: string;
+
   totalUnitsRequested?: number;
   totalLineCount?: number;
   assignedWarehouse?: string;
+
   items: OrderItem[];
 };
 
-const ALLOWED_ORDER_SOURCES = [
-   "AMAC CO - Colorado",
-  "AMAC CO - Arizona",
-  "AMAC CO - New Mexico",
-  "AMAC HI - Hawaii",
-  "AMAC NW - Oregon",
-  "AMAC NW - Washington",
-  "HOME BUDDY - Kansas",
-  "CA WEST - California",
-];
+const ALLOWED_ORDER_SOURCES = ["Innovage", "PRC"];
 
 export async function POST(req: Request) {
   try {
@@ -53,7 +44,7 @@ export async function POST(req: Request) {
         .map((item) => ({
           category: item.category || "",
           itemId: item.itemId || "",
-          itemName: item.itemName,
+          itemName: item.itemName.trim(),
           quantity: Number(item.quantity),
         })) || [];
 
@@ -77,11 +68,11 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!body.technicianName || !body.technicianEmail) {
+    if (!body.shipToName || !body.shipToName.trim()) {
       return NextResponse.json(
         {
           success: false,
-          message: "Technician name and technician email are required.",
+          message: "Ship To name is required.",
         },
         { status: 400 }
       );
@@ -107,16 +98,6 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!body.priority) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Priority is required.",
-        },
-        { status: 400 }
-      );
-    }
-
     if (cleanedItems.length === 0) {
       return NextResponse.json(
         {
@@ -137,24 +118,24 @@ export async function POST(req: Request) {
 
     const payload: OrderPayload = {
       orderSource: body.orderSource,
-      technicianSource: body.technicianSource || "",
-      technicianId: body.technicianId || "",
-      technicianName: body.technicianName,
-      technicianEmail: body.technicianEmail,
-      requesterName: body.requesterName,
-      requesterEmail: body.requesterEmail,
-      ccEmail: body.ccEmail || "",
+
+      shipToName: body.shipToName.trim(),
       phone: body.phone || "",
       shippingAddress1: body.shippingAddress1 || "",
       shippingAddress2: body.shippingAddress2 || "",
       city: body.city || "",
       state: body.state || "",
       zip: body.zip || "",
-      priority: body.priority,
+
+      requesterName: body.requesterName,
+      requesterEmail: body.requesterEmail,
+      ccEmail: body.ccEmail || "",
       comments: body.comments || "",
+
       assignedWarehouse: body.assignedWarehouse || "",
       totalUnitsRequested: backendTotalUnits,
       totalLineCount: backendTotalLines,
+
       items: cleanedItems,
     };
 
@@ -162,6 +143,7 @@ export async function POST(req: Request) {
 
     if (!flowUrl) {
       console.error("Missing POWER_AUTOMATE_ORDER_URL environment variable.");
+
       return NextResponse.json(
         {
           success: false,
