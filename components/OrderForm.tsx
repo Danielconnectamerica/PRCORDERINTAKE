@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { ITEM_CATALOG, ORDER_SOURCES } from "../lib/itemCatalog";
-import { TECHNICIANS } from "../lib/technicians";
 
 type ItemState = Record<string, number>;
 type OrderSource = (typeof ORDER_SOURCES)[number];
@@ -11,8 +10,6 @@ type CustomItem = {
   itemName: string;
   quantity: number;
 };
-
-const OTHER_TECH_VALUE = "__other__";
 
 export default function OrderForm() {
   const [items, setItems] = useState<ItemState>({});
@@ -24,63 +21,14 @@ export default function OrderForm() {
 
   const [orderSource, setOrderSource] = useState<OrderSource | "">("");
 
-  const [selectedTechId, setSelectedTechId] = useState("");
-  const [isManualTech, setIsManualTech] = useState(false);
-
-  const [technicianName, setTechnicianName] = useState("");
-  const [technicianEmail, setTechnicianEmail] = useState("");
+  // Ship To Information
+  const [shipToName, setShipToName] = useState("");
   const [phone, setPhone] = useState("");
   const [shippingAddress1, setShippingAddress1] = useState("");
   const [shippingAddress2, setShippingAddress2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
-
-  function clearTechnicianFields() {
-    setTechnicianName("");
-    setTechnicianEmail("");
-    setPhone("");
-    setShippingAddress1("");
-    setShippingAddress2("");
-    setCity("");
-    setState("");
-    setZip("");
-  }
-
-  function handleTechnicianChange(id: string) {
-    setSelectedTechId(id);
-    setError("");
-
-    if (!id) {
-      setIsManualTech(false);
-      clearTechnicianFields();
-      return;
-    }
-
-    if (id === OTHER_TECH_VALUE) {
-      setIsManualTech(true);
-      clearTechnicianFields();
-      return;
-    }
-
-    const tech = TECHNICIANS.find((t) => t.id === id);
-
-    if (!tech) {
-      setIsManualTech(false);
-      clearTechnicianFields();
-      return;
-    }
-
-    setIsManualTech(false);
-    setTechnicianName(tech.name);
-    setTechnicianEmail(tech.email);
-    setPhone(tech.phone);
-    setShippingAddress1(tech.shippingAddress1);
-    setShippingAddress2(tech.shippingAddress2);
-    setCity(tech.city);
-    setState(tech.state);
-    setZip(tech.zip);
-  }
 
   function changeQty(id: string, delta: number) {
     setItems((prev) => {
@@ -123,6 +71,7 @@ export default function OrderForm() {
       if (prev.length === 1) {
         return [{ itemName: "", quantity: 0 }];
       }
+
       return prev.filter((_, i) => i !== index);
     });
   }
@@ -182,18 +131,8 @@ export default function OrderForm() {
       return;
     }
 
-    if (!selectedTechId) {
-      setError("Please select a technician.");
-      return;
-    }
-
-    if (!technicianName.trim()) {
-      setError("Please enter a technician name.");
-      return;
-    }
-
-    if (!technicianEmail.trim()) {
-      setError("Please enter a technician email.");
+    if (!shipToName.trim()) {
+      setError("Please enter a Ship To name.");
       return;
     }
 
@@ -203,7 +142,7 @@ export default function OrderForm() {
       !state.trim() ||
       !zip.trim()
     ) {
-      setError("Please complete the technician shipping address.");
+      setError("Please complete the shipping address.");
       return;
     }
 
@@ -217,7 +156,6 @@ export default function OrderForm() {
     const requesterName = String(form.get("requesterName") || "").trim();
     const requesterEmail = String(form.get("requesterEmail") || "").trim();
     const ccEmail = String(form.get("ccEmail") || "").trim();
-    const priority = String(form.get("priority") || "Normal").trim();
     const comments = String(form.get("comments") || "").trim();
 
     if (!requesterName) {
@@ -236,6 +174,7 @@ export default function OrderForm() {
         const item = ITEM_CATALOG.flatMap((g) => g.items).find(
           (i) => i.id === itemId
         );
+
         const category = ITEM_CATALOG.find((g) =>
           g.items.some((i) => i.id === itemId)
         )?.category;
@@ -257,23 +196,23 @@ export default function OrderForm() {
 
     const payload = {
       orderSource,
-      technicianSource: isManualTech ? "manual" : "directory",
-      technicianId: isManualTech ? "" : selectedTechId,
-      technicianName: technicianName.trim(),
-      technicianEmail: technicianEmail.trim(),
-      requesterName,
-      requesterEmail,
-      ccEmail,
+
+      shipToName: shipToName.trim(),
       phone: phone.trim(),
       shippingAddress1: shippingAddress1.trim(),
       shippingAddress2: shippingAddress2.trim(),
       city: city.trim(),
       state: state.trim(),
       zip: zip.trim(),
-      priority,
+
+      requesterName,
+      requesterEmail,
+      ccEmail,
       comments,
+
       totalUnitsRequested: totalUnits,
       totalLineCount: totalLines,
+
       items: [...selectedStandardItems, ...selectedCustomItems],
     };
 
@@ -307,8 +246,10 @@ export default function OrderForm() {
     <form className="order-form" onSubmit={handleSubmit}>
       <div className="page-header">
         <div>
-          <h1>Inventory Order Request</h1>
-          <p className="page-subtitle">Submit an internal inventory request</p>
+          <h1>PRC / Innovage Order Request</h1>
+          <p className="page-subtitle">
+            Submit an internal inventory order request
+          </p>
         </div>
 
         <div className="summary-pill-wrap">
@@ -353,46 +294,16 @@ export default function OrderForm() {
       </section>
 
       <section className="card">
-        <h2>Technician / Ship To</h2>
+        <h2>Ship To Information</h2>
 
         <div className="form-grid">
           <div className="field field-full">
-            <label htmlFor="technicianSelect">Technician</label>
-            <select
-              id="technicianSelect"
-              value={selectedTechId}
-              onChange={(e) => handleTechnicianChange(e.target.value)}
-              required
-            >
-              <option value="">Select Technician</option>
-              {TECHNICIANS.map((tech) => (
-                <option key={tech.id} value={tech.id}>
-                  {tech.name}
-                </option>
-              ))}
-              <option value={OTHER_TECH_VALUE}>Other / New Technician</option>
-            </select>
-          </div>
-
-          <div className="field">
-            <label htmlFor="technicianName">Technician Name</label>
+            <label htmlFor="shipToName">Ship To Name</label>
             <input
-              id="technicianName"
-              name="technicianName"
-              value={technicianName}
-              onChange={(e) => setTechnicianName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="field">
-            <label htmlFor="technicianEmail">Technician Email</label>
-            <input
-              id="technicianEmail"
-              name="technicianEmail"
-              type="email"
-              value={technicianEmail}
-              onChange={(e) => setTechnicianEmail(e.target.value)}
+              id="shipToName"
+              name="shipToName"
+              value={shipToName}
+              onChange={(e) => setShipToName(e.target.value)}
               required
             />
           </div>
@@ -556,7 +467,9 @@ export default function OrderForm() {
                 {customItems.map((item, index) => (
                   <div key={index} className="custom-item-row">
                     <div className="field">
-                      <label htmlFor={`customItemName-${index}`}>Item Name</label>
+                      <label htmlFor={`customItemName-${index}`}>
+                        Item Name
+                      </label>
                       <input
                         id={`customItemName-${index}`}
                         type="text"
@@ -569,7 +482,9 @@ export default function OrderForm() {
                     </div>
 
                     <div className="field">
-                      <label htmlFor={`customItemQty-${index}`}>Quantity</label>
+                      <label htmlFor={`customItemQty-${index}`}>
+                        Quantity
+                      </label>
                       <input
                         id={`customItemQty-${index}`}
                         type="number"
