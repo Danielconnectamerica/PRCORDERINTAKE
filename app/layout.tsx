@@ -2,8 +2,8 @@ import "./globals.css";
 import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "Inventory Order Intake",
-  description: "Internal inventory order request form"
+  title: "PRC Inventory Order Intake",
+  description: " PRC Internal inventory order request form"
 };
 
 export default function RootLayout({
