@@ -1,9 +1,12 @@
-export const ORDER_SOURCES = ["Innovage", "PRC"] as const;
+export const ORDER_SOURCES = ["Innovage", "PRC", "Be Safe at Home"] as const;
+
+const PRC_INNOVAGE_SOURCES = ["Innovage", "PRC"] as const;
+const BE_SAFE_AT_HOME_SOURCES = ["Be Safe at Home"] as const;
 
 export const ITEM_CATALOG = [
   {
     category: "Anelto Devices & Accessories",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "anelto_accessory_buttons",
@@ -32,7 +35,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Belle Devices",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "belle_verizon",
@@ -46,7 +49,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Mytrex Devices & Accessories",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "mytrex_accessory_buttons",
@@ -68,7 +71,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "OTG Mini & Smartwatch",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "otg_mini_neck",
@@ -87,7 +90,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Medication Dispensers",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "medready_cell",
@@ -97,7 +100,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "General Accessories",
-    allowedSources: [...ORDER_SOURCES],
+    allowedSources: [...PRC_INNOVAGE_SOURCES],
     items: [
       {
         id: "door_knockers",
@@ -106,6 +109,100 @@ export const ITEM_CATALOG = [
       {
         id: "lockboxes",
         name: "Lockboxes (increments of 12)",
+      },
+    ],
+  },
+  {
+    category: "Be Safe at Home Inventory",
+    allowedSources: [...BE_SAFE_AT_HOME_SOURCES],
+    items: [
+      {
+        id: "bsah_broomall_anelto_accessory_buttons",
+        name: "BROOMALL Anelto Accessory Buttons (Neck and Wrist)",
+      },
+      {
+        id: "bsah_amac_qns_anelto_att_otg_microns",
+        name: "AMAC/QNS Anelto AT&T OTG/Microns",
+      },
+      {
+        id: "bsah_broomall_anelto_fall_detection_buttons",
+        name: "BROOMALL Anelto Fall Detection Buttons",
+      },
+      {
+        id: "bsah_amac_qns_anelto_lte",
+        name: "AMAC/QNS Anelto LTE",
+      },
+      {
+        id: "bsah_amac_qns_anelto_verizon_otg",
+        name: "AMAC/QNS Anelto VERIZON OTG",
+      },
+      {
+        id: "bsah_broomall_belle_verizon",
+        name: "BROOMALL Belle Verizon",
+      },
+      {
+        id: "bsah_broomall_belle_plus_verizon",
+        name: "BROOMALL Belle Plus Verizon",
+      },
+      {
+        id: "bsah_amac_qns_door_knockers",
+        name: "AMAC/QNS Door Knockers",
+      },
+      {
+        id: "bsah_broomall_lockboxes",
+        name: "BROOMALL Lockboxes (increments of 12)",
+      },
+      {
+        id: "bsah_broomall_medready_cell",
+        name: "BROOMALL MedReady Cell",
+      },
+      {
+        id: "bsah_broomall_mytrex_accessory_buttons",
+        name: "BROOMALL Mytrex Accessory Buttons (Neck and Wrist)",
+      },
+      {
+        id: "bsah_amac_qns_mytrex_cell_assure",
+        name: "AMAC/QNS Mytrex Cell/ASSURE",
+      },
+      {
+        id: "bsah_broomall_mytrex_fall_detection_buttons",
+        name: "BROOMALL Mytrex Fall Detection Buttons",
+      },
+      {
+        id: "bsah_broomall_qns_mytrex_landline",
+        name: "BROOMALL/QNS Mytrex Landline",
+      },
+      {
+        id: "bsah_broomall_otg_mini_neck",
+        name: "BROOMALL OTG Mini - Neck",
+      },
+      {
+        id: "bsah_broomall_otg_mini_wrist",
+        name: "BROOMALL OTG Mini - Wrist",
+      },
+      {
+        id: "bsah_broomall_smart_watch",
+        name: "BROOMALL Smart Watch",
+      },
+      {
+        id: "bsah_broomall_round_wrist_bands",
+        name: "BROOMALL Round Wrist Bands",
+      },
+      {
+        id: "bsah_amac_qns_mytrex_cell_verizon",
+        name: "AMAC/QNS Mytrex Cell-VERIZON",
+      },
+      {
+        id: "bsah_broomall_anelto_phb",
+        name: "BROOMALL Anelto PHB",
+      },
+      {
+        id: "bsah_broomall_otg_mini_neck_user_guide",
+        name: "BROOMALL OTG Mini - Neck USER GUIDE",
+      },
+      {
+        id: "bsah_broomall_otg_mini_wrist_user_guide",
+        name: "BROOMALL OTG Mini - Wrist USER GUIDE",
       },
     ],
   },
