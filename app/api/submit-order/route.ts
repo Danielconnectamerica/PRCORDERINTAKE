@@ -30,7 +30,7 @@ type OrderPayload = {
   items: OrderItem[];
 };
 
-const ALLOWED_ORDER_SOURCES = ["Innovage", "PRC"];
+const ALLOWED_ORDER_SOURCES = ["Innovage", "PRC", "Be Safe at Home"];
 
 export async function POST(req: Request) {
   try {
@@ -38,9 +38,7 @@ export async function POST(req: Request) {
 
     const cleanedItems =
       body.items
-        ?.filter(
-          (item) => item && item.itemName && Number(item.quantity) > 0
-        )
+        ?.filter((item) => item && item.itemName && Number(item.quantity) > 0)
         .map((item) => ({
           category: item.category || "",
           itemId: item.itemId || "",
