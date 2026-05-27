@@ -1,12 +1,26 @@
 export const ORDER_SOURCES = ["Innovage", "PRC", "Be Safe at Home"] as const;
 
-const PRC_INNOVAGE_SOURCES = ["Innovage", "PRC"] as const;
-const BE_SAFE_AT_HOME_SOURCES = ["Be Safe at Home"] as const;
+export type OrderSource = (typeof ORDER_SOURCES)[number];
 
-export const ITEM_CATALOG = [
+type CatalogItem = {
+  id: string;
+  name: string;
+  allowedSources?: readonly OrderSource[];
+};
+
+type CatalogGroup = {
+  category: string;
+  allowedSources: readonly OrderSource[];
+  items: CatalogItem[];
+};
+
+const PRC_INNOVAGE_SOURCES: readonly OrderSource[] = ["Innovage", "PRC"];
+const BE_SAFE_AT_HOME_SOURCES: readonly OrderSource[] = ["Be Safe at Home"];
+
+export const ITEM_CATALOG: CatalogGroup[] = [
   {
     category: "Anelto Devices & Accessories",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "anelto_accessory_buttons",
@@ -35,7 +49,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Belle Devices",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "belle_verizon",
@@ -49,7 +63,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Mytrex Devices & Accessories",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "mytrex_accessory_buttons",
@@ -71,7 +85,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "OTG Mini & Smartwatch",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "otg_mini_neck",
@@ -90,7 +104,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Medication Dispensers",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "medready_cell",
@@ -100,7 +114,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "General Accessories",
-    allowedSources: [...PRC_INNOVAGE_SOURCES],
+    allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
       {
         id: "door_knockers",
@@ -114,7 +128,7 @@ export const ITEM_CATALOG = [
   },
   {
     category: "Be Safe at Home Inventory",
-    allowedSources: [...BE_SAFE_AT_HOME_SOURCES],
+    allowedSources: BE_SAFE_AT_HOME_SOURCES,
     items: [
       {
         id: "bsah_broomall_anelto_accessory_buttons",
