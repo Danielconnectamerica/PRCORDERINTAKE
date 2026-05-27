@@ -246,9 +246,9 @@ export default function OrderForm() {
     <form className="order-form" onSubmit={handleSubmit}>
       <div className="page-header">
         <div>
-          <h1>PRC / Innovage Order Request</h1>
+          <h1>Inventory Order Request</h1>
           <p className="page-subtitle">
-            Submit an internal inventory order request
+            Submit an internal inventory order for PRC, Innovage, or Be Safe at Home
           </p>
         </div>
 
