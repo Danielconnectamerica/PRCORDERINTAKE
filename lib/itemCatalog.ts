@@ -84,6 +84,16 @@ export const ITEM_CATALOG: CatalogGroup[] = [
     ],
   },
   {
+    category: "Assure Devices",
+    allowedSources: PRC_INNOVAGE_SOURCES,
+    items: [
+      {
+        id: "cell_assure",
+        name: "Cell-Assure",
+      },
+    ],
+  },
+  {
     category: "OTG Mini & Smartwatch",
     allowedSources: PRC_INNOVAGE_SOURCES,
     items: [
