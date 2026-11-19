@@ -155,6 +155,8 @@ export default function OrderForm() {
 
     const requesterName = String(form.get("requesterName") || "").trim();
     const requesterEmail = String(form.get("requesterEmail") || "").trim();
+    const technicianName = String(form.get("technicianName") || "").trim();
+    const technicianEmail = String(form.get("technicianEmail") || "").trim();
     const ccEmail = String(form.get("ccEmail") || "").trim();
     const comments = String(form.get("comments") || "").trim();
 
@@ -165,6 +167,16 @@ export default function OrderForm() {
 
     if (!requesterEmail) {
       setError("Please enter requester email.");
+      return;
+    }
+
+    if (!technicianName) {
+      setError("Please enter technician name.");
+      return;
+    }
+
+    if (!technicianEmail) {
+      setError("Please enter technician email.");
       return;
     }
 
@@ -207,6 +219,8 @@ export default function OrderForm() {
 
       requesterName,
       requesterEmail,
+      technicianName,
+      technicianEmail,
       ccEmail,
       comments,
 
@@ -388,6 +402,21 @@ export default function OrderForm() {
             <input
               id="requesterEmail"
               name="requesterEmail"
+              type="email"
+              required
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="technicianName">Technician Name</label>
+            <input id="technicianName" name="technicianName" required />
+          </div>
+
+          <div className="field">
+            <label htmlFor="technicianEmail">Technician Email</label>
+            <input
+              id="technicianEmail"
+              name="technicianEmail"
               type="email"
               required
             />
