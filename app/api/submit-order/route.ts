@@ -20,6 +20,8 @@ type OrderPayload = {
 
   requesterName: string;
   requesterEmail: string;
+  technicianName?: string;
+  technicianEmail?: string;
   ccEmail?: string;
   comments?: string;
 
@@ -127,6 +129,14 @@ export async function POST(req: Request) {
 
       requesterName: body.requesterName,
       requesterEmail: body.requesterEmail,
+      technicianName:
+        typeof body.technicianName === "string"
+          ? body.technicianName.trim()
+          : "",
+      technicianEmail:
+        typeof body.technicianEmail === "string"
+          ? body.technicianEmail.trim()
+          : "",
       ccEmail: body.ccEmail || "",
       comments: body.comments || "",
 
