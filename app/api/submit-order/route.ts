@@ -20,8 +20,8 @@ type OrderPayload = {
 
   requesterName: string;
   requesterEmail: string;
-  technicianName?: string;
-  technicianEmail?: string;
+  technicianName: string;
+  technicianEmail: string;
   ccEmail?: string;
   comments?: string;
 
@@ -88,6 +88,21 @@ export async function POST(req: Request) {
       );
     }
 
+    if (
+      typeof body.technicianName !== "string" ||
+      !body.technicianName.trim() ||
+      typeof body.technicianEmail !== "string" ||
+      !body.technicianEmail.trim()
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Technician name and technician email are required.",
+        },
+        { status: 400 }
+      );
+    }
+
     if (!body.shippingAddress1 || !body.city || !body.state || !body.zip) {
       return NextResponse.json(
         {
@@ -129,14 +144,8 @@ export async function POST(req: Request) {
 
       requesterName: body.requesterName,
       requesterEmail: body.requesterEmail,
-      technicianName:
-        typeof body.technicianName === "string"
-          ? body.technicianName.trim()
-          : "",
-      technicianEmail:
-        typeof body.technicianEmail === "string"
-          ? body.technicianEmail.trim()
-          : "",
+      technicianName: body.technicianName.trim(),
+      technicianEmail: body.technicianEmail.trim(),
       ccEmail: body.ccEmail || "",
       comments: body.comments || "",
 
